@@ -33,15 +33,19 @@ const getSlideClasses = spec => {
       spec.currentSlide <= index &&
       index < spec.currentSlide + spec.slidesToShow;
   }
-  let slickCurrent = index === spec.currentSlide;
-  return {
+  let slickCurrent = spec.isOnSwiping
+    ? index === (spec.scrolledSlide ? spec.scrolledSlide : 0)
+    : index === spec.currentSlide;
+  let res = {
     "slick-slide": true,
     "slick-active": slickActive,
     "slick-center": slickCenter,
     "slick-cloned": slickCloned,
-    "slick-current": slickCurrent // dubious in case of RTL
-    "slick-my": slickCurrent 
+    "slick-current": slickCurrent, // dubious in case of RTL
+    "slick-my": slickCurrent
   };
+  res[`slick-${index}`] = true;
+  return res;
 };
 
 const getSlideStyle = spec => {
