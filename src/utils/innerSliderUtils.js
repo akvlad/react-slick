@@ -401,6 +401,10 @@ export const swipeMove = (e, spec) => {
     swipeLeft,
     trackStyle: getTrackCSS({ ...spec, left: swipeLeft })
   };
+  newSlide = currentSlide + getSlideCount(spec);
+  state = {
+    index: newSlide
+  };
   if (
     Math.abs(touchObject.curX - touchObject.startX) <
     Math.abs(touchObject.curY - touchObject.startY) * 0.8
