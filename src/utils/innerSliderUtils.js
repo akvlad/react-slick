@@ -338,7 +338,8 @@ export const swipeMove = (e, spec) => {
     touchObject,
     swipeEvent,
     listHeight,
-    listWidth
+    listWidth,
+    touchThreshold
   } = spec;
   if (scrolling) return;
   if (animating) return e.preventDefault();
@@ -396,10 +397,16 @@ export const swipeMove = (e, spec) => {
   if (verticalSwiping) {
     swipeLeft = curLeft + touchSwipeLength * positionOffset;
   }
+  let minSwipe = verticalSwiping
+    ? listHeight / touchThreshold
+    : listWidth / touchThreshold;
+
   let newSlide =
-    currentSlide +
-    (swipeDirection === "left" || swipeDirection === "up" ? 1 : -1) *
-      getSlideCount(spec);
+    touchObject.swipeLength > minSwipe
+      ? currentSlide +
+        (swipeDirection === "left" || swipeDirection === "up" ? 1 : -1) *
+          getSlideCount(spec)
+      : currentSlide;
   state = {
     ...state,
     touchObject,

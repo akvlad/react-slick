@@ -3535,7 +3535,8 @@
             touchObject = spec.touchObject,
             swipeEvent = spec.swipeEvent,
             listHeight = spec.listHeight,
-            listWidth = spec.listWidth;
+            listWidth = spec.listWidth,
+            touchThreshold = spec.touchThreshold;
           if (scrolling) return;
           if (animating) return e.preventDefault();
           if (vertical && swipeToSlide && verticalSwiping) e.preventDefault();
@@ -3605,10 +3606,17 @@
             swipeLeft = curLeft + touchSwipeLength * positionOffset;
           }
 
+          var minSwipe = verticalSwiping
+            ? listHeight / touchThreshold
+            : listWidth / touchThreshold;
           var newSlide =
-            currentSlide +
-            (swipeDirection === "left" || swipeDirection === "up" ? 1 : -1) *
-              getSlideCount(spec);
+            touchObject.swipeLength > minSwipe
+              ? currentSlide +
+                (swipeDirection === "left" || swipeDirection === "up"
+                  ? 1
+                  : -1) *
+                  getSlideCount(spec)
+              : currentSlide;
           state = _objectSpread({}, state, {
             touchObject: touchObject,
             swipeLeft: swipeLeft,
