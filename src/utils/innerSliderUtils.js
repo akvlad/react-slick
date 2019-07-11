@@ -398,7 +398,7 @@ export const swipeMove = (e, spec) => {
   }
   let newSlide =
     currentSlide +
-    (swipeDirection === "left" ? 1 : -1 || swipeDirection === "up" ? 1 : -1) *
+    (swipeDirection === "left" || swipeDirection === "up" ? 1 : -1) *
       getSlideCount(spec);
   state = {
     ...state,

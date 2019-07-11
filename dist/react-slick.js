@@ -3607,11 +3607,7 @@
 
           var newSlide =
             currentSlide +
-            (swipeDirection === "left"
-              ? 1
-              : -1 || swipeDirection === "up"
-              ? 1
-              : -1) *
+            (swipeDirection === "left" || swipeDirection === "up" ? 1 : -1) *
               getSlideCount(spec);
           state = _objectSpread({}, state, {
             touchObject: touchObject,
