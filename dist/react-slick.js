@@ -3607,7 +3607,12 @@
 
           var newSlide =
             currentSlide +
-            (swipeDirection === "left" ? 1 : -1) * getSlideCount(spec);
+            (swipeDirection === "left"
+              ? 1
+              : -1 || swipeDirection === "up"
+              ? 1
+              : -1) *
+              getSlideCount(spec);
           state = _objectSpread({}, state, {
             touchObject: touchObject,
             swipeLeft: swipeLeft,
@@ -3619,8 +3624,6 @@
             scrolledSlide: newSlide,
             isOnSwiping: true
           });
-          console.log("SLIDE SCROLL");
-          console.log(state.scrolledSlide);
 
           if (
             Math.abs(touchObject.curX - touchObject.startX) <
@@ -3647,7 +3650,9 @@
             currentSlide = spec.currentSlide,
             swipeToSlide = spec.swipeToSlide,
             scrolling = spec.scrolling,
-            onSwipe = spec.onSwipe;
+            onSwipe = spec.onSwipe,
+            scrolledSlide = spec.scrolledSlide,
+            isOnSwiping = spec.isOnSwiping;
 
           if (!dragging) {
             if (swipe) e.preventDefault();
@@ -3691,7 +3696,9 @@
             switch (swipeDirection) {
               case "left":
               case "up":
-                newSlide = currentSlide + getSlideCount(spec);
+                newSlide = isOnSwiping
+                  ? scrolledSlide
+                  : currentSlide + getSlideCount(spec);
                 slideCount = swipeToSlide
                   ? checkNavigable(spec, newSlide)
                   : newSlide;
@@ -3700,7 +3707,9 @@
 
               case "right":
               case "down":
-                newSlide = currentSlide - getSlideCount(spec);
+                newSlide = newSlide = isOnSwiping
+                  ? scrolledSlide
+                  : currentSlide - getSlideCount(spec);
                 slideCount = swipeToSlide
                   ? checkNavigable(spec, newSlide)
                   : newSlide;
